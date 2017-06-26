@@ -1,0 +1,61 @@
+<html>
+<head></head>
+<body>
+
+<input type="text" id="search" />
+
+<ul id="recents">
+	
+</ul>
+
+<script>
+	
+	showRecents();
+	
+	document.getElementById("search").onkeyup = function(e) {
+		//console.log(e);
+		var tar = e.target;
+		var val = tar.value;
+		if(e.keyCode == 13) {
+			recents.unshift(val);
+			recents = recents.filter(onlyUnique);
+			document.cookie = "recents="+recents.join(',');
+			showRecents();
+		}
+	}
+
+	function getCookie(name) {
+		var cookie = document.cookie;
+		var cvar = cookie.split(';');
+		for(var i = 0; i < cvar.length; i++) {
+			cvar[i] = cvar[i].trim();
+			if(cvar[i].indexOf("recents") == 0) {
+				var cookie_val = cvar[i].split("=");
+				return(cookie_val[1]);
+			}
+		}
+		return "";
+	}
+	
+	var recents = getCookie("recents").split(',');
+	
+	function showRecents() {
+		var dom = document.getElementById("recents");
+		dom.innerHTML = "";
+		for(var i = 0 ; i < recents.length; i++) {
+			dom.innerHTML += "<li><label><input type='checkbox' onchange='checked(this)' value='"+recents[i]+"' />"+recents[i]+"</label></li>";
+		}
+	}
+
+	function checked(obj) {
+		alert(obj);
+	}
+	
+
+	function onlyUnique(value, index, self) { 
+		return self.indexOf(value) === index;
+	}
+</script>
+
+</body>
+</html>
