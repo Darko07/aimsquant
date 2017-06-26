@@ -4,7 +4,7 @@
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
   </head>
   <body>
-    <input type="text" id="symbol-inp" placeholder="Enter atleast 4 letters"/><br/>
+    <input type="text" id="search" placeholder="Enter atleast 4 letters"/><br/>
     <input type="text" id="date-from" placeholder="From yyyy-mm-dd" /><br/>
     <input type="text" id="date-to" placeholder="To yyyy-mm-dd" /><br/>
     <ul id="recents">
@@ -65,6 +65,8 @@
 							obj.checked = false;
 						}
 					} else {
+						chartTitles = chartTitles.filter(function(a){return a !== val});
+						highchart.setTitle({text: chartTitles.join(" and ")});
 						highchart.get(val).remove();
 						obj.checked = false;
 						charts_shown -= 1;
@@ -94,6 +96,10 @@
 					var from = getCookie("last_from");
 					var to = getCookie("last_to");
           if(clear) {
+						chartTitles = [];
+						//array.filter(function(a){return a !== 'deleted'})
+						document.getElementById("search-results").style.display = 'none';
+						document.getElementById("search").value = "";
 						charts_shown = 0;
             while(highchart.series.length > 0)
               highchart.series[0].remove(true);
@@ -125,7 +131,8 @@
                   valueDecimals: 5
                 }
               });
-              chartTitles = [dataset.dataset_code];
+              chartTitles.unshift(dataset.dataset_code);
+							chartTitles = chartTitles.filter(onlyUnique);
               highchart.setTitle({text: chartTitles.join(" and ")});
               recents.unshift(dataset.dataset_code);
               recents = recents.filter(onlyUnique);
@@ -154,6 +161,7 @@
 
         function getSymbol(e) {
           var val = e.target.value.toLowerCase();
+					document.getElementById("search-results").style.display = "block";
           var searchData = [];
           if(val.length >= 3) {
             //Search
@@ -197,7 +205,7 @@
             stockData = parseData(res.split('\n'));
 
             // Add search event to input after search data is loaded
-            document.getElementById("symbol-inp").addEventListener("keyup", getSymbol);
+            document.getElementById("search").addEventListener("keyup", getSymbol);
             console.log(stockData);
           }
         }
