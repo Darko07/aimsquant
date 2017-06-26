@@ -16,10 +16,12 @@
       </table>
     </div>
     <div id="chart-container" style="height: 400px; min-width: 310px"></div>
+		<div id="data-container"></div>
     <script>
       //document.onload = function() {
 
         var stockData = [];
+				var current_data = [];
         var chartTitles = [];
 				
 				var charts_shown = 0;
@@ -88,6 +90,23 @@
           }
           return "";
         }
+				
+				function showCurrentData(id) {
+					var obj = document.getElementById(id);
+					var data_var = [];
+					/*
+						Say to use the name of current_data
+						console.log(current_data.name);
+					*/	
+					//To append a field called name from current_data - 
+					obj.innerHTML += "<div> <p class='field'> Name </p> <p class='value'> "+current_data.name+" <p> </div>";
+					
+					//To append a field called dataset_code from current_data - 
+					obj.innerHTML += "<div> <p class='field'> Code </p> <p class='value'> "+current_data.dataset_code+" <p> </div>";
+					
+					//To append a field called refreshed_at from current_data - 
+					obj.innerHTML += "<div> <p class='field'> Refreshed At </p> <p class='value'> "+current_data.refreshed_at+" <p> </div>";
+				}
 
         function showChart(company_id, clear=false) {
 					if(charts_shown > 3) {
@@ -109,6 +128,7 @@
 						document.cookie = "last_to="+to+";";
 						showRecents();
           }
+					
           var url = "https://www.quandl.com/api/v3/datasets/XNSE/"+company_id+".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date="+from+"&end_date="+to;
           console.log(url);
           var xhr = new XMLHttpRequest;
@@ -118,7 +138,14 @@
             if(xhr.status == 200 && xhr.readyState == 4) {
               var dataset = JSON.parse(xhr.response).dataset;
               console.log(dataset);
-              dataset.data.forEach(function(element) {
+							current_data = dataset;
+							
+							/* ------------------------------------------------------------------------------------------- */
+							//Looking for this?
+							showCurrentData('data-container');
+							/* ------------------------------------------------------------------------------------------- */
+              
+							dataset.data.forEach(function(element) {
                 var temp = element[1];
                 element[1] = element[4];
                 element[4] = temp;
