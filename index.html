@@ -21,6 +21,11 @@
 
         var stockData = [];
         var chartTitles = [];
+				
+				var charts_shown = 0;
+				
+				var current_from = getCookie("last_from");
+				var current_to = getCookie("last_to");
 
         var highchart = Highcharts.stockChart('chart-container', {
           rangeSelector: {
@@ -53,7 +58,17 @@
 
         function selectRecent(obj) {
           var val = obj.value;
-          showChart(val);
+					//alert(obj.checked);
+					if(obj.checked) {
+						if(!showChart(val)) {
+							alert("More than 4 charts cannot be shown at a time.");
+							obj.checked = false;
+						}
+					} else {
+						highchart.get(val).remove();
+						obj.checked = false;
+						charts_shown -= 1;
+					}
         }
 
         function getCookie(cname) {
@@ -73,13 +88,21 @@
         }
 
         function showChart(company_id, clear=false) {
+					if(charts_shown > 3) {
+						return false;
+					}
+					var from = getCookie("last_from");
+					var to = getCookie("last_to");
           if(clear) {
+						charts_shown = 0;
             while(highchart.series.length > 0)
-                highchart.series[0].remove(true);
-								showRecents();
+              highchart.series[0].remove(true);
+						from = document.getElementById("date-from").value;
+						to = document.getElementById("date-to").value;
+						document.cookie = "last_from="+from+";";
+						document.cookie = "last_to="+to+";";
+						showRecents();
           }
-          var from = document.getElementById("date-from").value;
-          var to = document.getElementById("date-to").value;
           var url = "https://www.quandl.com/api/v3/datasets/XNSE/"+company_id+".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date="+from+"&end_date="+to;
           console.log(url);
           var xhr = new XMLHttpRequest;
@@ -96,6 +119,7 @@
               }, this);
               highchart.addSeries({
                 name: dataset.dataset_code,
+								id: dataset.dataset_code,
                 data: dataset.data,
                 tooltip: {
                   valueDecimals: 5
@@ -109,11 +133,12 @@
               console.log(recents);
               document.cookie = "recents="+recents.join(",")+";";
               recents = getCookie("recents").split(',');
+							charts_shown += 1;
             }
           }
 
           xhr.send();
-
+					return true;
 				}
 				
 				function onlyUnique(value, index, self) { 
