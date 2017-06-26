@@ -103,6 +103,8 @@
               chartTitles = [dataset.dataset_code];
               highchart.setTitle({text: chartTitles.join(" and ")});
               recents.unshift(dataset.dataset_code);
+              recents = recents.filter(onlyUnique);
+
               console.log(recents);
               document.cookie = "recents="+recents.join(",")+";";
               recents = getCookie("recents").split(',');
@@ -113,7 +115,9 @@
           xhr.send();
 
         }
-
+function onlyUnique(value, index, self) { 
+		return self.indexOf(value) === index;
+	}
         function arrayToHtml(array, htmlObject) {
           htmlObject.innerHTML = "";
           for(var i = 0; i < array.length; i++) {
@@ -171,6 +175,7 @@
           }
         }
         xhr.send();
+     
       //}
     </script>
   </body>
