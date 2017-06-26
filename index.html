@@ -76,6 +76,7 @@
           if(clear) {
             while(highchart.series.length > 0)
                 highchart.series[0].remove(true);
+								showRecents();
           }
           var from = document.getElementById("date-from").value;
           var to = document.getElementById("date-to").value;
@@ -108,16 +109,17 @@
               console.log(recents);
               document.cookie = "recents="+recents.join(",")+";";
               recents = getCookie("recents").split(',');
-              showRecents();
             }
           }
 
           xhr.send();
 
-        }
-function onlyUnique(value, index, self) { 
-		return self.indexOf(value) === index;
-	}
+				}
+				
+				function onlyUnique(value, index, self) { 
+					return self.indexOf(value) === index;
+				}
+	 
         function arrayToHtml(array, htmlObject) {
           htmlObject.innerHTML = "";
           for(var i = 0; i < array.length; i++) {
