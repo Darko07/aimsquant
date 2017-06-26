@@ -1,6 +1,177 @@
-<div id="data"></div>
-<script>
-  var xhr = new XMLHttpRequest();
-  xhr.open("https://darko07.github.io/aimsquant/XNSE-datasets-codes.csv");
-  console.log(xhr);
-</script>
+<html>
+  <head>
+    <!--script src="https://code.highcharts.com/highcharts.src.js"></script-->
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  </head>
+  <body>
+    <input type="text" id="symbol-inp" placeholder="Enter atleast 4 letters"/><br/>
+    <input type="text" id="date-from" placeholder="From yyyy-mm-dd" /><br/>
+    <input type="text" id="date-to" placeholder="To yyyy-mm-dd" /><br/>
+    <ul id="recents">
+
+    </ul>
+    <div id="data">
+      <table id="search-results">
+
+      </table>
+    </div>
+    <div id="chart-container" style="height: 400px; min-width: 310px"></div>
+    <script>
+      //document.onload = function() {
+
+        var stockData = [];
+        var chartTitles = [];
+
+        var highchart = Highcharts.stockChart('chart-container', {
+          rangeSelector: {
+            enabled: false,
+          },
+          title: {
+            text: "AimsQuant"
+          },
+          series: [],
+        });
+
+        console.log(highchart.series);
+
+        var series_count = 0;
+
+        var recents = getCookie("recents").split(',');
+
+        function showRecents() {
+          console.log(recents);
+          console.log(document.cookie);
+          var dom = document.getElementById("recents");
+          dom.innerHTML = "";
+          for(var i = 0; i < recents.length; i++) {
+            if(recents[i] != "")
+              dom.innerHTML += "<li><label><input type='checkbox' onchange='selectRecent(this)' value='"+recents[i]+"'>"+recents[i]+"</label></li>";
+          }
+        }
+
+        showRecents();
+
+        function selectRecent(obj) {
+          var val = obj.value;
+          showChart(val);
+        }
+
+        function getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i <ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') {
+                  c = c.substring(1);
+              }
+              if (c.indexOf(name) == 0) {
+                  return c.substring(name.length, c.length);
+              }
+          }
+          return "";
+        }
+
+        function showChart(company_id, clear=false) {
+          if(clear) {
+            while(highchart.series.length > 0)
+                highchart.series[0].remove(true);
+          }
+          var from = document.getElementById("date-from").value;
+          var to = document.getElementById("date-to").value;
+          var url = "https://www.quandl.com/api/v3/datasets/XNSE/"+company_id+".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date="+from+"&end_date="+to;
+          console.log(url);
+          var xhr = new XMLHttpRequest;
+          xhr.open("get", url, async=true);
+
+          xhr.onreadystatechange = function() {
+            if(xhr.status == 200 && xhr.readyState == 4) {
+              var dataset = JSON.parse(xhr.response).dataset;
+              console.log(dataset);
+              dataset.data.forEach(function(element) {
+                var temp = element[1];
+                element[1] = element[4];
+                element[4] = temp;
+              }, this);
+              highchart.addSeries({
+                name: dataset.dataset_code,
+                data: dataset.data,
+                tooltip: {
+                  valueDecimals: 5
+                }
+              });
+              chartTitles = [dataset.dataset_code];
+              highchart.setTitle({text: chartTitles.join(" and ")});
+              recents.unshift(dataset.dataset_code);
+              console.log(recents);
+              document.cookie = "recents="+recents.join(",")+";";
+              recents = getCookie("recents").split(',');
+              showRecents();
+            }
+          }
+
+          xhr.send();
+
+        }
+
+        function arrayToHtml(array, htmlObject) {
+          htmlObject.innerHTML = "";
+          for(var i = 0; i < array.length; i++) {
+            htmlObject.innerHTML += "<tr onclick=\"showChart('"+array[i].id+"', true)\"><td>"+array[i].id+"</td><td>"+array[i].name+"</td><td>"+array[i].index+"</td></tr>";
+          }
+        }
+
+        function getSymbol(e) {
+          var val = e.target.value.toLowerCase();
+          var searchData = [];
+          if(val.length >= 3) {
+            //Search
+            console.log(val);
+            for(var i = 0; i < stockData.length; i++) {
+              var index = stockData[i].name.toLowerCase().indexOf(val);
+              if(index != -1) {
+                console.log("found");
+                var data = {
+                  index: index,
+                  id: stockData[i].id,
+                  name: stockData[i].name
+                };
+                var j = 0;
+                //while(searchData.length > 0 && data.index > searchData[j++].index);
+                searchData.splice(j, 0, data);
+              }
+            }
+            console.log(searchData);
+          }
+          arrayToHtml(searchData, document.getElementById("search-results"));
+        }
+
+        function parseData(response_array) {
+          var parsed_data = [];
+          for(var i = 0; i < response_array.length; i++) {
+            if(response_array[i].indexOf(",") != -1) {
+              var cur_data = response_array[i].split(",");
+              parsed_data.push({id: cur_data[0].substr(5), name: cur_data[1]});
+            }
+          }
+          return parsed_data;
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://darko07.github.io/aimsquant/XNSE-datasets-codes.csv", async=true);
+        xhr.onreadystatechange = function() {
+          if(xhr.status == 200 && xhr.readyState == 4) {
+            var res = xhr.response;
+            console.log("Response");
+            stockData = parseData(res.split('\n'));
+
+            // Add search event to input after search data is loaded
+            document.getElementById("symbol-inp").addEventListener("keyup", getSymbol);
+            console.log(stockData);
+          }
+        }
+        xhr.send();
+      //}
+    </script>
+  </body>
+</html>
