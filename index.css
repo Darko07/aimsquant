@@ -1,0 +1,229 @@
+@font-face {
+    font-family: font;
+    src: url(font.ttf);
+}
+
+*{
+font-family: font;
+margin: 0px;
+border: 0px;
+padding: 0px;
+}
+
+body{
+background-color: #f2efef;
+}
+
+#header{
+position: absolute;
+top: 0px;
+height: 9%;
+width: 100vw;
+background-color:#21B4EB;
+}
+
+#search{
+position: relative;
+top: 50%;
+transform: translateY(-150%);
+left: 25%;
+height: 50%;
+width: 25vw;
+border-radius: 2px;
+background-color: transparent;
+border-bottom: 1px solid #333;
+}
+
+#search-results{
+position:absolute;
+width: 500px;
+background-color: pink;
+top:10%;
+left: 25%;
+z-index: 99;
+color: #333;
+border-radius: 2px; 
+}
+
+.code-search{
+position: relative;
+padding: 8px 8px 0px 8px;
+}
+
+.name-search{
+position: relative;
+left: 8px;
+padding-bottom: 3px;
+}
+
+#date-from{
+height: 50%;
+width: 12vw;
+position: relative;
+border-radius: 2px;
+left: 52%;
+top: -75%;
+background-color: transparent;
+border-bottom: 1px solid #333;  
+}
+
+#date-to{
+height: 50%;
+width: 12vw;
+position: relative;
+border-radius: 2px;
+left: 66%;
+top: -125%;  
+background-color: transparent;
+border-bottom: 1px solid #333;
+}
+
+#navigation-panel{
+position: relative;
+top: 9%;
+height: 91%;
+width: 18vw;
+background-color: #777;
+}
+
+.nav-elem{
+height: 8%;
+width: 100%;
+background-color: #777;
+color: white;
+}
+
+.nav-elem-text{
+position: relative;
+top:25%; 
+left:15%;
+}
+
+.sub-elem{
+background-color: #262626;
+}
+
+.sub-elem-text{
+color: white;
+}
+
+#stock-data{
+height: 91%;
+width: 85%;
+background-color: transparent;
+position: absolute;
+top: 9%;
+left: 15%;
+}
+
+#stock-data-head{
+position: relative;
+top: 25px;
+left: 80px;
+}
+
+#closing-rate{
+position: relative;
+top: 12%;
+left: 7%;
+height: 25%;
+width: 25%;
+background-color: white;
+}
+
+#closing-data-div p{
+font-size: 40px;
+position: relative;
+top: -20px;
+left: 105px;
+}
+
+.close-point-img{
+height: 40px;
+width: 40px;
+position: relative;
+top: 30px;
+left: 39px;
+}
+
+.down-img{
+transform: rotate(180deg);
+}
+
+#stock-stats{
+position: relative;
+top: -13%;
+left: 34%;
+height: 25%;
+width: 35%;
+background-color: white;
+}
+
+#key-ratios{
+position: relative;
+top: -38%;
+left: 71%;
+height: 25%;
+width: 25%;
+background-color: white;
+}
+
+.stock-data-heads{
+position:relative;
+top: -27px;
+left: 2px;
+}
+
+#recents-container{
+position: relative;
+top: -28%;
+left: 71%;
+height: 80%;
+width: 25%;
+background-color: white;
+}
+
+.recent-selector{
+list-style: none;
+padding-left: 5px;
+}
+
+.recent-id{
+position: relative;
+top: -24px;
+left: 25px;
+}
+
+.recent-name{
+width: 250px;
+height: auto;
+position: relative;
+top: -15px;
+left: 20px;
+font-size: 12px;
+}
+
+.recent-stock{
+position: relative;
+top: -80px;
+width: 100px;
+left: 230px;
+}
+
+#chart-container-container{
+display: inline-block;
+position: absolute;
+top: 52%;
+left: 21%;
+height: 50%;
+width: 52.25%;
+}
+
+#logo{
+font-size: 20px;
+color: white;
+position: relative;
+top: 50%;
+transform: translateY(-50%);
+left: 50px;
+}
