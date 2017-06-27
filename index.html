@@ -1,37 +1,313 @@
 <html>
   <head>
+    
+    <style>
+
+      @font-face {
+          font-family: font;
+          src: url(font.ttf);
+      }
+
+      *{
+        font-family: font;
+        margin: 0px;
+        border: 0px;
+        padding: 0px;
+      }
+
+      body{
+        background-color: #f2efef;
+      }
+
+      #header{
+        position: absolute;
+        top: 0px;
+        height: 9%;
+        width: 100vw;
+        background-color:#21B4EB;
+      }
+
+      #search{
+        position: relative;
+        top: 50%;
+        transform: translateY(-150%);
+        left: 25%;
+        height: 50%;
+        width: 25vw;
+        border-radius: 2px;
+        background-color: transparent;
+        border-bottom: 1px solid #333;
+      }
+
+      #search-results{
+        position:absolute;
+        width: 500px;
+        background-color: pink;
+        top:10%;
+        left: 25%;
+        z-index: 99;
+        color: #333;
+        border-radius: 2px; 
+      }
+
+      .code-search{
+        position: relative;
+        padding: 8px 8px 0px 8px;
+      }
+
+      .name-search{
+        position: relative;
+        left: 8px;
+        padding-bottom: 3px;
+      }
+
+      #date-from{
+        height: 50%;
+        width: 12vw;
+        position: relative;
+        border-radius: 2px;
+        left: 52%;
+        top: -75%;
+        background-color: transparent;
+        border-bottom: 1px solid #333;  
+      }
+
+      #date-to{
+        height: 50%;
+        width: 12vw;
+        position: relative;
+        border-radius: 2px;
+        left: 66%;
+        top: -125%;  
+        background-color: transparent;
+        border-bottom: 1px solid #333;
+      }
+
+      #navigation-panel{
+        position: relative;
+        top: 9%;
+        height: 91%;
+        width: 18vw;
+        background-color: #777;
+      }
+
+      .nav-elem{
+        height: 8%;
+        width: 100%;
+        background-color: #777;
+        color: white;
+      }
+
+      .nav-elem-text{
+        position: relative;
+        top:25%; 
+        left:15%;
+      }
+
+      .sub-elem{
+        background-color: #262626;
+      }
+
+      .sub-elem-text{
+        color: white;
+      }
+
+      #stock-data{
+        height: 91%;
+        width: 85%;
+        background-color: transparent;
+        position: absolute;
+        top: 9%;
+        left: 15%;
+      }
+
+      #stock-data-head{
+        position: relative;
+        top: 25px;
+        left: 80px;
+      }
+
+      #closing-rate{
+        position: relative;
+        top: 12%;
+        left: 7%;
+        height: 25%;
+        width: 25%;
+        background-color: white;
+      }
+
+      #closing-data-div p{
+        font-size: 40px;
+        position: relative;
+        top: -20px;
+        left: 105px;
+      }
+
+      .close-point-img{
+        height: 40px;
+        width: 40px;
+        position: relative;
+        top: 30px;
+        left: 39px;
+      }
+
+      .down-img{
+        transform: rotate(180deg);
+      }
+
+       #stock-stats{
+        position: relative;
+        top: -13%;
+        left: 34%;
+        height: 25%;
+        width: 35%;
+        background-color: white;
+      }
+
+      #key-ratios{
+        position: relative;
+        top: -38%;
+        left: 71%;
+        height: 25%;
+        width: 25%;
+        background-color: white;
+      }
+
+      .stock-data-heads{
+        position:relative;
+        top: -27px;
+        left: 2px;
+      }
+
+      #recents-container{
+        position: relative;
+        top: -28%;
+        left: 71%;
+        height: 80%;
+        width: 25%;
+        background-color: white;
+      }
+
+      .recent-selector{
+        list-style: none;
+        padding-left: 5px;
+      }
+
+      .recent-id{
+        position: relative;
+        top: -24px;
+        left: 25px;
+      }
+
+      .recent-name{
+        width: 250px;
+        height: auto;
+        position: relative;
+        top: -15px;
+        left: 20px;
+        font-size: 12px;
+      }
+
+      .recent-stock{
+        position: relative;
+        top: -80px;
+        width: 100px;
+        left: 230px;
+      }
+
+      #chart-container-container{
+        display: inline-block;
+        position: absolute;
+        top: 52%;
+        left: 21%;
+        height: 50%;
+        width: 52.25%;
+      }
+
+      #logo{
+        font-size: 20px;
+        color: white;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 50px;
+      }
+
+    </style>
+
     <!--script src="https://code.highcharts.com/highcharts.src.js"></script-->
     <script src="https://code.highcharts.com/stock/highstock.js"></script>
   </head>
   <body>
-    <input type="text" id="search" placeholder="Enter atleast 4 letters"/><br/>
-    <input type="text" id="date-from" placeholder="From yyyy-mm-dd" /><br/>
-    <input type="text" id="date-to" placeholder="To yyyy-mm-dd" /><br/>
-    <ul id="recents">
-
-    </ul>
-    <div id="data">
-      <table id="search-results">
-
-      </table>
+    <div id="header">
+      <p id="logo">AimsQuant</p>
+      <input type="text" id="search" placeholder="Enter atleast 4 letters"/><br/>
+      <input type="text" id="date-from" placeholder="From yyyy-mm-dd" /><br/>
+      <input type="text" id="date-to" placeholder="To yyyy-mm-dd" /><br/>
     </div>
-    <div id="chart-container" style="height: 400px; min-width: 310px"></div>
-		<div id="data-container"></div>
+
+    <div id="navigation-panel">
+      <div class="nav-elem"><p class="nav-elem-text">Company</p></div>
+      <div class="nav-elem sub-elem"><p class="nav-elem-text sub-elem-text">Summary</p></div>
+      <div class="nav-elem sub-elem"><p class="nav-elem-text sub-elem-text">News</p></div>
+      <div class="nav-elem sub-elem"><p class="nav-elem-text sub-elem-text">Related</p></div>
+      <div class="nav-elem sub-elem"><p class="nav-elem-text sub-elem-text">Historical Prices</p></div>
+      <div class="nav-elem"><p class="nav-elem-text">Markets</p></div>
+      <div class="nav-elem"><p class="nav-elem-text">Portfolios</p></div>
+      <div class="nav-elem"><p class="nav-elem-text">Stock Scanner</p></div>
+      <div class="nav-elem"><p class="nav-elem-text">Google Trends</p></div>
+
+    </div>
+
+    <div id="stock-data">
+
+      <div id="stock-data-head">
+        <p id="stock-data-name"></p>
+        <p id="stock-data-id"></p>
+      </div>
+      
+      <div id="closing-rate"><p class="stock-data-heads">NSE Values</p><p id="closing-data-div"></p></div>
+      
+      <div id="stock-stats"><p class="stock-data-heads">Share Values</p></div>
+      
+      <div id="key-ratios"><p class="stock-data-heads">Quick Facts</p></div>
+
+      <div id="recents-container">
+        <p class="stock-data-heads">Recents</p>
+        <ul id="recents">
+
+        </ul>
+      </div>
+    </div>
+    <div id="chart-container-container">
+      <div id="chart-container" ></div>
+    </div>
+    <div id="data">
+      <div id="search-results">
+
+      </div>
+    </div>
+		<!--div id="data-container"></div-->
     <script>
       //document.onload = function() {
 
         var stockData = [];
 				var current_data = [];
         var chartTitles = [];
+
+        var recents_arr = {};
 				
 				var charts_shown = 0;
 				
-				var current_from = getCookie("last_from");
-				var current_to = getCookie("last_to");
+				//var current_from = getCookie("last_from");
+				//var current_to = getCookie("last_to");
 
         var highchart = Highcharts.stockChart('chart-container', {
           rangeSelector: {
             enabled: false,
+          },
+          navigator: {
+            enabled: false
           },
           title: {
             text: "AimsQuant"
@@ -45,27 +321,124 @@
 
         var recents = getCookie("recents").split(',');
 
+        recents = recents.slice(0, 5);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://darko07.github.io/aimsquant/XNSE-datasets-codes.csv", async=true);
+        xhr.onreadystatechange = function() {
+          if(xhr.status == 200 && xhr.readyState == 4) {
+            var res = xhr.response;
+            console.log("Response");
+            stockData = parseData(res.split('\n'));
+
+            // Add search event to input after search data is loaded
+            document.getElementById("search").addEventListener("keyup", getSymbol);
+            console.log(stockData);
+          }
+        }
+        xhr.send();
+
         function showRecents() {
           console.log(recents);
           console.log(document.cookie);
           var dom = document.getElementById("recents");
           dom.innerHTML = "";
           for(var i = 0; i < recents.length; i++) {
-            if(recents[i] != "")
-              dom.innerHTML += "<li><label><input type='checkbox' onchange='selectRecent(this)' value='"+recents[i]+"'>"+recents[i]+"</label></li>";
+            if(recents[i] != "") {
+
+              fetchStockData(recents[i], getYesterday(), getToday(), function(e){
+                var xhr = e.target;
+                if(xhr.status == 200 && xhr.readyState == 4) {
+                  var dataset = JSON.parse(e.target.response).dataset;
+
+                  dataset.data.forEach(function(element) {
+                    var temp = element[1];
+                    element[1] = element[4];
+                    element[4] = temp;
+                  }, this);
+
+                  var curid = dataset.dataset_code;
+                  recents_arr[curid] = dataset;
+
+                  //console.log(recents_arr[rec]);
+                  dom.innerHTML += "<li class='recent-selector'><input type='checkbox' onchange='selectRecent(this)' value='"+recents_arr[curid].dataset_code+"'>";
+                  dom.innerHTML += "<p class='recent-id'>"+recents_arr[curid].dataset_code+"</p>";
+                  dom.innerHTML += "<p class='recent-name'>"+recents_arr[curid].name+"</p>";
+                  dom.innerHTML += "<p class='recent-stock'>"+recents_arr[curid].data[0][1].toFixed(2)+"</p></li>";
+                }
+              });
+
+              /*              
+              
+              if(!(recents[i] in recents_arr)) {
+                fetchStockData(recents[i], getYesterday(), getToday(), function(e){
+                  var xhr = e.target;
+                  if(xhr.status == 200 && xhr.readyState == 4) {
+                    var dataset = JSON.parse(e.target.response).dataset;
+                    var temp = dataset.data[0][4];
+                    dataset.data[0][4] = dataset.data[0][1];
+                    dataset.data[0][1] = temp;
+                    //console.log(dataset);
+                    recents_arr[rec] = dataset;
+                    //console.log(recents_arr[rec]);
+                    dom.innerHTML += "<li class='recent-selector'><input type='checkbox' onchange='selectRecent(this)' value='"+recents_arr[rec].dataset_code+"'>";
+                    dom.innerHTML += "<p class='recent-id'>"+recents_arr[rec].dataset_code+"</p>";
+                    dom.innerHTML += "<p class='recent-name'>"+recents_arr[rec].name+"</p>";
+                    dom.innerHTML += "<p class='recent-stock'>"+recents_arr[rec].data[0][1].toFixed(2)+"</p></li>";
+                  }
+                });
+              } else {
+                dom.innerHTML += "<li id='recent-selector'><input type='checkbox' onchange='selectRecent(this)' value='"+recents_arr[rec].dataset_code+"'>";
+                dom.innerHTML += "<p class='recent-id'>"+recents_arr[rec].dataset_code+"</p>";
+                dom.innerHTML += "<p class='recent-name'>"+recents_arr[rec].name+"</p>";
+                dom.innerHTML += "<p class='recent-stock'>"+recents_arr[rec].data[0][1].toFixed(2)+"</p></li>";
+              }*/
+            }
           }
+          console.log(recents_arr);
         }
 
         showRecents();
 
         function selectRecent(obj) {
           var val = obj.value;
+          console.log(recents_arr);
 					//alert(obj.checked);
 					if(obj.checked) {
-						if(!showChart(val)) {
+						if(charts_shown > 3) {
 							alert("More than 4 charts cannot be shown at a time.");
 							obj.checked = false;
-						}
+						} else {
+              var dataset = recents_arr[val];
+              chartTitles.unshift(dataset.dataset_code);
+							chartTitles = chartTitles.filter(onlyUnique);
+              highchart.setTitle({text: chartTitles.join(" and ")});
+              
+              highchart.addSeries({
+                name: dataset.dataset_code,
+								id: dataset.dataset_code,
+                data: dataset.data,
+                tooltip: {
+                  valueDecimals: 5
+                }
+              });
+
+              document.getElementById("stock-data-id").innerHTML = dataset.dataset_code;
+              document.getElementById("stock-data-name").innerHTML = dataset.name;
+							charts_shown += 1;
+
+              //show stock data in div
+              var stock_data_field = document.getElementById("closing-data-div");
+
+              var diff = dataset.data[0][1] - dataset.data[1][1];
+              stock_data_field.innerHTML = ""
+              
+              if(diff > 1) {
+                stock_data_field.innerHTML = "<img class='close-point-img' src='up.png'/><p>"+dataset.data[0][1].toFixed(2)+"</p>";
+              } else {
+                stock_data_field.innerHTML = "<img class='close-point-img down-img' src='down.png'/><p>"+dataset.data[0][1].toFixed(2)+"</p>";
+              }
+            }
 					} else {
 						chartTitles = chartTitles.filter(function(a){return a !== val});
 						highchart.setTitle({text: chartTitles.join(" and ")});
@@ -94,7 +467,10 @@
 				function showCurrentData(id) {
 					var obj = document.getElementById(id);
 					var data_var = [];
-					/*
+          //Clear current data
+          obj.innerHTML = "";
+					
+          /*
 						Say to use the name of current_data
 						console.log(current_data.name);
 					*/	
@@ -108,12 +484,26 @@
 					obj.innerHTML += "<div> <p class='field'> Refreshed At </p> <p class='value'> "+current_data.refreshed_at+" <p> </div>";
 				}
 
+
+        function fetchStockData(company_id, from=null, to=null, callback=null) {
+          console.log("From=>", from, "To=>", to);
+          var url = "https://www.quandl.com/api/v3/datasets/XNSE/"+company_id+".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date="+from+"&end_date="+to;
+          
+          var xhr = new XMLHttpRequest;
+          xhr.open("get", url, async=true);
+
+          xhr.onreadystatechange = callback;
+
+          xhr.send();
+        }
+
+
         function showChart(company_id, clear=false) {
 					if(charts_shown > 3) {
 						return false;
 					}
-					var from = getCookie("last_from");
-					var to = getCookie("last_to");
+					//var from = getCookie("last_from");
+					//var to = getCookie("last_to");
           if(clear) {
 						chartTitles = [];
 						//array.filter(function(a){return a !== 'deleted'})
@@ -122,34 +512,37 @@
 						charts_shown = 0;
             while(highchart.series.length > 0)
               highchart.series[0].remove(true);
-						from = document.getElementById("date-from").value;
-						to = document.getElementById("date-to").value;
-						document.cookie = "last_from="+from+";";
-						document.cookie = "last_to="+to+";";
+						
+						//document.cookie = "last_from="+from+";";
+						//document.cookie = "last_to="+to+";";
 						showRecents();
           }
-					
-          var url = "https://www.quandl.com/api/v3/datasets/XNSE/"+company_id+".json?api_key=gWf2CLShwrGUBVnqzsT4&start_date="+from+"&end_date="+to;
-          console.log(url);
-          var xhr = new XMLHttpRequest;
-          xhr.open("get", url, async=true);
+          var from = document.getElementById("date-from").value;
+					var to = document.getElementById("date-to").value;
+          
+          if(from == "")
+            from = getYesterday()
+          
+          if(to == "")
+            to = getToday()
 
-          xhr.onreadystatechange = function() {
+          fetchStockData(company_id, from, to, function(e) {
+            var xhr = e.target;
             if(xhr.status == 200 && xhr.readyState == 4) {
-              var dataset = JSON.parse(xhr.response).dataset;
+              //console.log(e.target.response);
+              var dataset = JSON.parse(e.target.response).dataset;
               console.log(dataset);
 							current_data = dataset;
-							
-							/* ------------------------------------------------------------------------------------------- */
-							//Looking for this?
-							showCurrentData('data-container');
-							/* ------------------------------------------------------------------------------------------- */
               
 							dataset.data.forEach(function(element) {
                 var temp = element[1];
                 element[1] = element[4];
                 element[4] = temp;
               }, this);
+
+              var curid = dataset.dataset_code;
+              recents_arr[curid] = dataset;
+
               highchart.addSeries({
                 name: dataset.dataset_code,
 								id: dataset.dataset_code,
@@ -158,20 +551,35 @@
                   valueDecimals: 5
                 }
               });
+
+              document.getElementById("stock-data-id").innerHTML = dataset.dataset_code;
+              document.getElementById("stock-data-name").innerHTML = dataset.name;
+
               chartTitles.unshift(dataset.dataset_code);
 							chartTitles = chartTitles.filter(onlyUnique);
               highchart.setTitle({text: chartTitles.join(" and ")});
               recents.unshift(dataset.dataset_code);
               recents = recents.filter(onlyUnique);
-
+              recents = recents.slice(0, 5);
               console.log(recents);
               document.cookie = "recents="+recents.join(",")+";";
               recents = getCookie("recents").split(',');
 							charts_shown += 1;
-            }
-          }
 
-          xhr.send();
+              //show stock data in div
+              var stock_data_field = document.getElementById("closing-data-div");
+
+              var diff = dataset.data[0][1] - dataset.data[1][1];
+              stock_data_field.innerHTML = ""
+              
+              if(diff > 1) {
+                stock_data_field.innerHTML = "<img class='close-point-img' src='up.png'/><p>"+dataset.data[0][1].toFixed(2)+"</p>";
+              } else {
+                stock_data_field.innerHTML = "<img class='close-point-img down-img' src='down.png'/><p>"+dataset.data[0][1].toFixed(2)+"</p>";
+              }
+            }
+          });
+
 					return true;
 				}
 				
@@ -182,7 +590,7 @@
         function arrayToHtml(array, htmlObject) {
           htmlObject.innerHTML = "";
           for(var i = 0; i < array.length; i++) {
-            htmlObject.innerHTML += "<tr onclick=\"showChart('"+array[i].id+"', true)\"><td>"+array[i].id+"</td><td>"+array[i].name+"</td><td>"+array[i].index+"</td></tr>";
+            htmlObject.innerHTML += "<div class='search-results' onclick=\"showChart('"+array[i].id+"', true)\"><p class='code-search'>"+array[i].id+"</p><p class='name-search'>"+array[i].name+"</p></div>";
           }
         }
 
@@ -209,7 +617,7 @@
             }
             console.log(searchData);
           }
-          arrayToHtml(searchData, document.getElementById("search-results"));
+          arrayToHtml(searchData.slice(0, 10), document.getElementById("search-results"));
         }
 
         function parseData(response_array) {
@@ -223,20 +631,37 @@
           return parsed_data;
         }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://darko07.github.io/aimsquant/XNSE-datasets-codes.csv", async=true);
-        xhr.onreadystatechange = function() {
-          if(xhr.status == 200 && xhr.readyState == 4) {
-            var res = xhr.response;
-            console.log("Response");
-            stockData = parseData(res.split('\n'));
+        function getToday() {
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
 
-            // Add search event to input after search data is loaded
-            document.getElementById("search").addEventListener("keyup", getSymbol);
-            console.log(stockData);
-          }
+          var yyyy = today.getFullYear();
+          if(dd<10){
+              dd='0'+dd;
+          } 
+          if(mm<10){
+              mm='0'+mm;
+          } 
+          var today = yyyy+'-'+mm+'-'+dd;
+          return today;
         }
-        xhr.send();
+
+        function getYesterday() {
+          var yday = new Date(new Date() - 240*3600*1000);
+          var dd = yday.getDate();
+          var mm = yday.getMonth()+1; //January is 0!
+
+          var yyyy = yday.getFullYear();
+          if(dd<10){
+              dd='0'+dd;
+          } 
+          if(mm<10){
+              mm='0'+mm;
+          } 
+          var yday = yyyy+'-'+mm+'-'+dd;
+          return yday;
+        }
      
       //}
     </script>
